@@ -1,4 +1,4 @@
-import { Request } from "express";
+import {  Request, } from "express";
 import mongoose from "mongoose";
 
 export type RequestBodyType = {
@@ -18,8 +18,8 @@ export interface IUser extends Document {
 	email: string;
 	password: string;
 	avatar?: {
-		urL: string;
-		public_id: string;
+		url: string | null;
+		public_id: string | null;
 	};
 	role?: "user" | "seller";
 	gender?: "male" | "female";
@@ -36,7 +36,11 @@ export type UserType = {
 	_id: any;
 	name: string;
 	email: string;
-	password: string;
+	password?: string;
+	avatar?:{
+		url?:string,
+		public_id?:string
+	}
 	role: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -45,5 +49,5 @@ export type UserType = {
 };
 
 export interface AuthRequestType extends Request {
-	user: UserType | null;
+	user:UserType;
 }
