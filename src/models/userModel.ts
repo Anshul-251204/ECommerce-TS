@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { IUser } from "../types/types.js";
+
 const userSchema = new mongoose.Schema(
 	{
 		name: {
@@ -36,7 +38,10 @@ const userSchema = new mongoose.Schema(
 			type: Date,
 			// required: [true, "Please enter Date of birth"],
 		},
-		refreshToken: String,
+		refreshToken: {
+			type: String,
+			
+		},
 	},
 	{
 		timestamps: true,
@@ -49,6 +54,9 @@ userSchema.pre("save",async function(next) {
 	}
 	next()
 })
+userSchema.methods.checkPassword = async function(password:string){
+	return  bcrypt.compareSync(password, this.password)
+}
 
 userSchema.methods.generateAccessToken = function(){
 
@@ -77,6 +85,6 @@ userSchema.methods.generateRefreshToken = function(){
     )
 }
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User

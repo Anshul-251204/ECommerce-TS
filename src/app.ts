@@ -8,6 +8,8 @@ app.use(cookieParser());
 // app.use();
 
 
+app.get("/health-check",(req,res)=>res.send("Working fine ⚙️🔥"))
+
 // IMPORTING ROUTERS -->>>>
 import userRouter from "./routes/userRoutes.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
