@@ -87,7 +87,7 @@ export const login = asyncHandle(
 		const { accessToken, refreshToken } =
 			await generateAccessAndRefreshToken(user);
 
-		res.status(201)
+		res.status(200)
 			.cookie("accessToken", accessToken, accessTokenOptions)
 			.cookie("refreshToken", refreshToken, refreshTokenOptions)
 			.json(new ApiResponse(user, "User is Register Successfully ."));

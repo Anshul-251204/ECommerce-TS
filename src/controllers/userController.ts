@@ -4,7 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import User from "../models/userModel.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
-import { AuthRequestType,  } from "../types/types.js";
+import { AuthRequestType, ChangePasswordRequestBody, UserType,  } from "../types/types.js";
 
 export const changeAvatar = asyncHandle(
 	async (req: AuthRequestType, res: Response, next: NextFunction) => {
@@ -41,3 +41,44 @@ export const changeAvatar = asyncHandle(
 		);
 	}
 );
+export const changePassword = asyncHandle(async(req:AuthRequestType, res:Response, next:NextFunction)=>{
+	const { oldPassword, newPassword}:ChangePasswordRequestBody = req.body;
+
+	if(!oldPassword || !newPassword) {
+		return next(new ApiError(400, "All Fields are required !"));
+	}
+
+	const user = await User.findById(req?.user._id);
+
+	const isMatch = await user?.checkPassword(oldPassword);
+
+	if(!isMatch){
+		return next(new ApiError(401, "Incorrect Password !"));
+	}
+
+	user.password = newPassword;
+
+	await user?.save();
+
+	res.status(200).json(
+		new ApiResponse(null,"Your Password Change Sucessfully")
+	)
+})
+
+export const changeEmail = asyncHandle(async(req:AuthRequestType, res:Response, next:NextFunction)=>{
+	const { email } = req.body;
+
+	if (!email) {
+		return next(new ApiError(400, "Email Fields is required !"));
+	}
+
+	const user = await User.findById(req?.user._id);
+
+	user.email = email;
+
+	await user?.save();
+
+	res.status(200).json(
+		new ApiResponse(null, "Your Email Change Sucessfully")
+	);
+})

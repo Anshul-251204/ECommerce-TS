@@ -46,8 +46,14 @@ export type UserType = {
 	updatedAt: Date;
 	__v: any;
 	refreshToken: string;
-};
+} | any;
 
 export interface AuthRequestType extends Request {
 	user:UserType;
 }
+
+
+export type ChangePasswordRequestBody = {
+	oldPassword: string;
+	newPassword: string;
+};
