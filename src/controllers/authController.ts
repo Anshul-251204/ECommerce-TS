@@ -6,7 +6,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import { accessTokenOptions, refreshTokenOptions } from "../constant.js";
 
 //importing typesss here
-import { LoginRequestBody } from "../types/types.js";
+import { LoginRequestBody, UserRequestBody } from "../types/types.js";
 
 const generateAccessAndRefreshToken = async (user: any) => {
 	const accessToken = await user.generateAccessToken();
@@ -20,7 +20,7 @@ const generateAccessAndRefreshToken = async (user: any) => {
 
 export const register = asyncHandle(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const { name, email, password } = req.body;
+		const { name, email, password }:UserRequestBody = req.body;
 
 		if (!name || !email || !password) {
 			return next(new ApiError(400, "All Field is required !"));

@@ -65,7 +65,7 @@ export const changePassword = asyncHandle(async(req:AuthRequestType, res:Respons
 	)
 })
 
-export const changeEmail = asyncHandle(async(req:AuthRequestType, res:Response, next:NextFunction)=>{
+export const changeEmail = asyncHandle(async(req:AuthRequestType, res:Response, next:NextFunction)=> {
 	const { email } = req.body;
 
 	if (!email) {

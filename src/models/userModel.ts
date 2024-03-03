@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { IUser } from "../types/types.js";
@@ -85,6 +85,6 @@ userSchema.methods.generateRefreshToken = function(){
     )
 }
 
-const User = mongoose.model<IUser | any>("User", userSchema);
+const User = mongoose.model<IUser & Document >("User", userSchema);
 
 export default User

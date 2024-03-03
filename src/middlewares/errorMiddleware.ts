@@ -7,8 +7,8 @@ const errorMiddleware = (
 	res: Response,
 	next: NextFunction
 ) => {
-	err.message = err.message ? err.message : "Something Went wrong";
-    err.statusCode = err.statusCode ? err.statusCode : 500;
+	err.message ||=  "Something Went wrong";
+    err.statusCode ||=  500;
 
     res.status(err.statusCode).json({
         sucess:false,
