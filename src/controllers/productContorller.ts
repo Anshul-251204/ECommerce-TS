@@ -157,6 +157,3 @@ export const getSingleProduct = asyncHandler(
 		res.status(200).json(new ApiResponse(product, "a Single Product."));
 	}
 );
-export const searchProduct = asyncHandler(
-	async (req: Request, res: Response, next: NextFunction) => {}
-);
