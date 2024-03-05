@@ -22,24 +22,24 @@ const productSchema = new mongoose.Schema({
 		type: String,
 		required: [true, "Product description is Required !"],
 	},
-    highlight:{
-        type:String
-    },
+	highlight: {
+		type: String,
+	},
 	productImage: [
 		{
 			url: {
 				type: String,
-                // required:[true,"Product image is Required !"]
+				// required:[true,"Product image is Required !"]
 			},
 			public_id: {
 				type: String,
 			},
 		},
 	],
-    owner:{
-        type:String,
-        required:[true, "Product owner is required"]
-    }
+	owner: {
+		type: String,
+		required: [true, "Product owner is required"],
+	},
 });
 
 const Product = mongoose.model<IProduct & Document>("Product",productSchema);

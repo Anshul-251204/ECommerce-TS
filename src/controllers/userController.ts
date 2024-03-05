@@ -4,7 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import User from "../models/userModel.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
-import { AuthRequestType, ChangePasswordRequestBody, UserType,  } from "../types/types.js";
+import { AuthRequestType, ChangePasswordRequestBody, IUser, UserType,  } from "../types/types.js";
 
 export const changeAvatar = asyncHandle(
 	async (req: AuthRequestType, res: Response, next: NextFunction) => {
@@ -48,7 +48,7 @@ export const changePassword = asyncHandle(async(req:AuthRequestType, res:Respons
 		return next(new ApiError(400, "All Fields are required !"));
 	}
 
-	const user = await User.findById(req?.user._id);
+	const user:UserType = await User.findById(req?.user._id);
 
 	const isMatch = await user?.checkPassword(oldPassword);
 
@@ -72,7 +72,7 @@ export const changeEmail = asyncHandle(async(req:AuthRequestType, res:Response, 
 		return next(new ApiError(400, "Email Fields is required !"));
 	}
 
-	const user = await User.findById(req?.user._id);
+	const user:any = await User.findById(req?.user._id);
 
 	user.email = email;
 

@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
-export const deletefile = async (public_id: string) => {
+export const deleteOnCloudinary = async (public_id: string) => {
 	await cloudinary.uploader.destroy(public_id);
 };
 

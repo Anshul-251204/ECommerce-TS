@@ -51,7 +51,7 @@ export type UserType = {
 	updatedAt: Date;
 	__v: any;
 	refreshToken: string;
-} | any;
+} | any ;
 
 export type ProductImageType = {
 	url: string | undefined;
