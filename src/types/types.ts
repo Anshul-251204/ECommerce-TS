@@ -1,6 +1,5 @@
-import {  Request, } from "express";
+import { Request } from "express";
 import mongoose from "mongoose";
-
 
 // REQUREST BODY TYPES //
 
@@ -29,44 +28,41 @@ export type ProductRequestBody = {
 	highlight: string;
 };
 
- // HELPER TYPES
+// HELPER TYPES
 
 export type Image = {
 	url: string;
 	public_id: string;
 };
 
-
-export type UserType = {
-	_id: any;
-	name: string;
-	email: string;
-	password?: string;
-	avatar?:{
-		url?:string,
-		public_id?:string
-	}
-	role: string;
-	createdAt: Date;
-	updatedAt: Date;
-	__v: any;
-	refreshToken: string;
-} | any ;
+export type UserType =
+	| {
+			_id: any;
+			name: string;
+			email: string;
+			password?: string;
+			avatar?: {
+				url?: string;
+				public_id?: string;
+			};
+			role: string;
+			createdAt: Date;
+			updatedAt: Date;
+			__v: any;
+			refreshToken: string;
+	  }
+	| any;
 
 export type ProductImageType = {
 	url: string | undefined;
 	public_id: string | undefined;
 };
 
-
-
 export interface AuthRequestType extends Request {
-	user:UserType;
+	user: UserType;
 }
 
-
-
-	//  MONGOOSE MODEL INTERFACE //
+//  MONGOOSE MODEL INTERFACE //
 
 export interface IUser extends Document {
 	_id: any;
@@ -85,7 +81,6 @@ export interface IUser extends Document {
 	generateRefreshToken: () => {};
 }
 
-
 export interface IProduct {
 	name: string;
 	price: number;
@@ -99,3 +94,24 @@ export interface IProduct {
 	updatedAt: Date;
 	__v: any;
 }
+
+// REQUEST TYPES //
+
+export type SearchProductQuery = {
+	search?: string;
+	category?: string;
+	price?: string;
+	sort?: number | string;
+	page?: string;
+};
+
+export type BaseQuerySearchProduct = {
+	search?: {
+		$regex: string;
+		$option: string;
+	};
+	price?: {
+		$lte: number;
+	};
+	category?: string;
+};

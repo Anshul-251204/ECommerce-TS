@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import {
 	AuthRequestType,
+	BaseQuerySearchProduct,
 	ProductImageType,
 	ProductRequestBody,
+	SearchProductQuery,
 } from "../types/types.js";
 import asyncHandler from "../utils/AsyncHandler.js";
 import ApiError from "../utils/ApiError.js";
@@ -94,6 +96,47 @@ export const latestProduct = asyncHandler(
 		res.status(200).json(new ApiResponse(products, "latest Products."));
 	}
 );
+export const getAllProduct = asyncHandler(
+	async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const { search, category, price, sort }: SearchProductQuery =
+			req.params;
+		const page = Number(req.params.page);
+		const limit = Number(process.env.PRODUCT_PER_PAGE!) || 5;
+		const skip = Number(page - 1) * limit;
+		const sortQuery: number = Number(sort ? sort : -1);
+
+		const baseQuery: BaseQuerySearchProduct = {
+			
+		};
+
+		if(search) {
+			baseQuery.search = {
+				$regex:search,
+				$option:"i"
+			}
+		}
+		if(category) {
+			baseQuery.category = category;
+		}
+		if(price) {
+			baseQuery.price = {
+				$lte:Number(price)};
+		}
+
+		const products = await Product.find(baseQuery)
+			.sort(sort == "asc" ? { price: -1 } : { price: 1 })
+			.skip(skip)
+			.limit(limit);
+
+		res.status(200).json(
+			new ApiResponse(products, "All Product.")
+		);
+	}
+);
 
 export const getCategory = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
@@ -107,16 +150,12 @@ export const getCategory = asyncHandler(
 
 export const getSingleProduct = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const { productId} = req.params;
+		const { productId } = req.params;
 
 		const product = await Product.findById(productId);
 
-		res.status(200).json(
-			new ApiResponse(product, "a Single Product.")
-		)
-
+		res.status(200).json(new ApiResponse(product, "a Single Product."));
 	}
-
 );
 export const searchProduct = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {}
