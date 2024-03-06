@@ -44,10 +44,11 @@ export const newOrder = asyncHandler(
 );
 export const myOrder = asyncHandler(
 	async (req: AuthRequestType, res: Response, next: NextFunction) => {
-		const { userId } = req.params;
 
-		if(userId){
-			return next(new ApiError(400, "UserID is required !"))
+		const  userId  = req.user._id;
+		
+		if(!userId){
+			return next(new ApiError(400, "UserId is required !"))
 		}
 
 		const orders = await Order.find({user: userId});
