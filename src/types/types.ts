@@ -81,7 +81,7 @@ export interface IUser extends Document {
 	generateRefreshToken: () => {};
 }
 
-export interface IProduct {
+export interface IProduct extends Document{
 	name: string;
 	price: number;
 	quantity: number;
@@ -93,6 +93,10 @@ export interface IProduct {
 	createdAt: Date;
 	updatedAt: Date;
 	__v: any;
+}
+
+export interface IOrder {
+
 }
 
 // REQUEST TYPES //
@@ -115,3 +119,25 @@ export type BaseQuerySearchProduct = {
 	};
 	category?: string;
 };
+
+export type OrderItemsType ={
+	name:string;
+	image:string;
+	price:number;
+	quantity:number;
+	productId:string;
+}
+export type ShippingInfoType = {
+	address:string;
+	city:string;
+	state:string;
+	pincode:Number;
+}
+export type OrderRequestBody ={
+	shippingInfo:ShippingInfoType;
+	user:any;
+	subtotal:number;
+	shippingCharges:number;
+	total:number;
+	orderItems:OrderItemsType[]
+}

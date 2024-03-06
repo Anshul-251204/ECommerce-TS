@@ -9,7 +9,7 @@ import {
 import asyncHandler from "../utils/AsyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/Cloudinary.js";
-import { MulterError } from "multer";
+import { cacheData } from "../app.js";
 import Product from "../models/productModel.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
@@ -67,6 +67,8 @@ export const addProduct = asyncHandler(
 			owner: req.user._id,
 		});
 
+		await cacheData.del("latest-product")
+
 		res.status(201).json(
 			new ApiResponse(product, "Your product is successfully uploaded.")
 		);
@@ -88,10 +90,17 @@ export const deleteProduct = asyncHandler(
 		);
 	}
 );
-
 export const latestProduct = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const products = await Product.find().sort({ createdAt: -1 }).limit(10);
+
+		let products = []; 
+
+		if (cacheData.has("latest-product")) {
+			products = JSON.parse(cacheData.get("latest-product") as string);
+		}
+		
+		products = await Product.find().sort({ createdAt: -1 }).limit(10);
+		cacheData.set("latest-products", JSON.stringify(products));
 
 		res.status(200).json(new ApiResponse(products, "latest Products."));
 	}
