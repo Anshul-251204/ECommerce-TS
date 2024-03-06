@@ -29,7 +29,7 @@ export const newOrder = asyncHandler(
 		const order = await Order.create({
 			shippingInfo,
 			orderItems,
-			user:req.user._id,
+			user: req.user._id,
 			subtotal,
 			shippingCharges,
 			total,
@@ -44,18 +44,24 @@ export const newOrder = asyncHandler(
 );
 export const myOrder = asyncHandler(
 	async (req: AuthRequestType, res: Response, next: NextFunction) => {
+		const userId = req.user._id;
 
-		const  userId  = req.user._id;
-		
-		if(!userId){
-			return next(new ApiError(400, "UserId is required !"))
+		if (!userId) {
+			return next(new ApiError(400, "UserId is required !"));
 		}
 
-		const orders = await Order.find({user: userId});
+		const orders = await Order.find({ user: userId });
+
+		res.status(200).json(new ApiResponse(orders, "You'r All Orders."));
+	}
+);
+export const allOrderOfSeller = asyncHandler(
+	async (req: AuthRequestType, res: Response, next: NextFunction) => {
+
+		const orders = await Order.find();
 
 		res.status(200).json(
-			new ApiResponse(orders, "You'r All Orders.")
+			new ApiResponse(orders, "all orders")
 		)
 	}
 );
-
