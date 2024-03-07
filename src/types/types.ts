@@ -133,11 +133,12 @@ export type ShippingInfoType = {
 	state:string;
 	pincode:Number;
 }
-export type OrderRequestBody ={
-	shippingInfo:ShippingInfoType;
-	user:any;
-	subtotal:number;
-	shippingCharges:number;
-	total:number;
-	orderItems:OrderItemsType[]
-}
+export type OrderRequestBody = {
+	shippingInfo: ShippingInfoType;
+	user: any;
+	subtotal: number;
+	shippingCharges: number;
+	total: number;
+	orderItems: OrderItemsType[];
+	status:"Processing" | "Shipped" | "Delivered"
+};

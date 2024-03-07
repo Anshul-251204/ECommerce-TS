@@ -57,11 +57,29 @@ export const myOrder = asyncHandler(
 );
 export const allOrderOfSeller = asyncHandler(
 	async (req: AuthRequestType, res: Response, next: NextFunction) => {
-
 		const orders = await Order.find();
 
-		res.status(200).json(
-			new ApiResponse(orders, "all orders")
-		)
+		res.status(200).json(new ApiResponse(orders, "all orders"));
+	}
+);
+export const changeStatus = asyncHandler(
+	async (req: AuthRequestType, res: Response, next: NextFunction) => {
+		const { orderId } = req.params;
+		const { status } = req.body;
+
+		if (!orderId) return next(new ApiError(400, "Order id is required!"));
+		if (!status) return next(new ApiError(400, "status id is required!"));
+
+		const order: any = await Order.findById(orderId);
+
+		if (order?.status) {
+			order.status = status;
+		}
+
+		await order?.save();
+
+		await order?.save(); // Save the updated order
+
+		res.status(200).json({ success: true, data: order });
 	}
 );
